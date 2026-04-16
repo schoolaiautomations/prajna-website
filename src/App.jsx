@@ -148,6 +148,15 @@ export default function App() {
                     Apply Now
                   </a>
                 </li>
+                <li className="mt-2 px-2">
+                  <a 
+                    href="https://ouzeqnkvmspmpcevnumg.supabase.co/storage/v1/object/public/Parent%20App%20APK/app-debug.apk" 
+                    download
+                    className="block bg-blue-500 hover:bg-blue-600 text-center text-white font-bold py-2 rounded-md text-sm transition"
+                  >
+                    📱 Download Parent App
+                  </a>
+                </li>
               </ul>
             )}
           </div>

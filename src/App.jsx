@@ -1,29 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import principalImg from "./Images/principal.jpeg";
 
+/* ─── DATA ─── */
 const navLinks = ["Home", "About Us", "Courses", "Contact"];
 
 const courses = [
-  { icon: "🌐", title: "Language", color: "bg-blue-500", desc: "Master new languages with expert instructors" },
-  { icon: "📈", title: "Business", color: "bg-green-500", desc: "Grow your business acumen and leadership skills" },
-  { icon: "📚", title: "Literature", color: "bg-red-500", desc: "Explore world literature and creative writing" },
-  { icon: "🔬", title: "Science", color: "bg-purple-500", desc: "Dive deep into physics, chemistry & biology" },
-  { icon: "🎨", title: "Arts", color: "bg-yellow-500", desc: "Express creativity through painting and design" },
-  { icon: "💻", title: "Technology", color: "bg-cyan-500", desc: "Learn coding, AI and the future of tech" },
-];
-
-const events = [
-  { date: "3 December 2026", title: "Campus Clean Workshop", time: "10:00 AM – 3:00 PM", location: "Auditorium" },
-  { date: "7 December 2026", title: "Tech Summit", time: "10:00 AM – 3:00 PM", location: "Auditorium" },
-  { date: "12 December 2026", title: "Environment Conference", time: "10:00 AM – 3:00 PM", location: "Auditorium" },
-  { date: "20 December 2026", title: "Annual Science Fair", time: "09:00 AM – 5:00 PM", location: "Main Hall" },
-];
-
-const teachers = [
-  { name: "Dr. Sarah Johnson", subject: "Mathematics", img: "https://randomuser.me/api/portraits/women/44.jpg" },
-  { name: "Prof. Mark Williams", subject: "Physics", img: "https://randomuser.me/api/portraits/men/32.jpg" },
-  { name: "Ms. Emily Chen", subject: "Literature", img: "https://randomuser.me/api/portraits/women/68.jpg" },
-  { name: "Mr. David Kumar", subject: "Computer Science", img: "https://randomuser.me/api/portraits/men/75.jpg" },
+  { icon: "🌐", title: "Language", desc: "Master new languages with expert instructors" },
+  { icon: "📈", title: "Business", desc: "Grow your business acumen and leadership skills" },
+  { icon: "📚", title: "Literature", desc: "Explore world literature and creative writing" },
+  { icon: "🔬", title: "Science", desc: "Dive deep into physics, chemistry & biology" },
+  { icon: "🎨", title: "Arts", desc: "Express creativity through painting and design" },
+  { icon: "💻", title: "Technology", desc: "Learn coding, AI and the future of tech" },
 ];
 
 const toppers = [
@@ -35,487 +22,605 @@ const toppers = [
   { name: "Ananya Reddy", marks: "980/1000", rank: "State 1st", exam: "State Board", img: "https://randomuser.me/api/portraits/women/64.jpg" },
 ];
 
-const stats = [
-  { value: "8,000+", label: "Students Enrolled" },
-  { value: "200+", label: "Expert Teachers" },
-  { value: "150+", label: "Courses Offered" },
-  { value: "99%", label: "Success Rate" },
+const aims = [
+  "To facilitate better learning processes",
+  "To give better education with utmost discipline",
+  "To strengthen inner abilities of the students",
+  "To pave a right track for sounding academic career",
+  "To inculcate good learning habits and values",
+  "To create a supportive environment for holistic development",
 ];
 
-const testimonials = [
-  {
-    name: "Priya Sharma",
-    role: "Alumni – Class of 2024",
-    text: "Edubin transformed my life. The teachers are incredible and the environment pushes you to be your best every single day.",
-    img: "https://randomuser.me/api/portraits/women/12.jpg",
-  },
-  {
-    name: "Arjun Mehta",
-    role: "Current Student",
-    text: "The courses are world-class. I gained practical skills and confidence that I couldn't have gotten anywhere else.",
-    img: "https://randomuser.me/api/portraits/men/15.jpg",
-  },
-  {
-    name: "Sneha Rao",
-    role: "Alumni – Class of 2023",
-    text: "From language to technology, the diversity of programs here is unmatched. Highly recommend Edubin to everyone!",
-    img: "https://randomuser.me/api/portraits/women/25.jpg",
-  },
+const promises = [
+  "Child centered learning program",
+  "Well designed curriculum with national standards and latest trends",
+  "Well trained faculty",
+  "Standard content for concept oriented learning in all subjects",
+  "Tests to develop competitive skills right from 3rd standard",
+  "Safe and secure transport facilities",
+  "Special courses like Vedic maths and abacus as part of mainstream curriculum",
+  "Unwavering support throughout your educational journey",
 ];
 
+const schoolRatios = [
+  { grade: "Nursery to 2nd Class", ratio: "1 : 20", icon: "🧒" },
+  { grade: "3rd Class to 4th Class", ratio: "1 : 25", icon: "📖" },
+  { grade: "5th Class to 8th Class", ratio: "1 : 30", icon: "📝" },
+  { grade: "9th Class to 10th Class", ratio: "1 : 40", icon: "🎓" },
+];
+
+const intermediateCourses = [
+  { course: "IPE + EAPCET", ratio: "1 : 40", icon: "⚡" },
+  { course: "IPE + JEE MAINS", ratio: "1 : 40", icon: "🚀" },
+  { course: "IPE + NEET", ratio: "1 : 40", icon: "🩺" },
+];
+
+const contactInfo = [
+  { icon: "📍", title: "Our Location", detail: "JVR Bhavan, Near SBI Bank, Jaggampeta, Kakinada Dist, Andhra Pradesh" },
+  { icon: "📞", title: "Phone Number", detail: "+91 7674966739 / 9441791705" },
+  { icon: "✉️", title: "Email Address", detail: "sripranjnagroup@gmail.com" },
+];
+
+/* ─── HOOKS ─── */
+function useInView(threshold = 0.12) {
+  const ref = useRef(null);
+  const [isVisible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+
+  return [ref, isVisible];
+}
+
+/* ─── SECTION WRAPPER ─── */
+function Section({ children, className = "", id }) {
+  const [ref, isVisible] = useInView();
+  return (
+    <section
+      id={id}
+      ref={ref}
+      className={`${className} ${isVisible ? "animate-fade-in" : "opacity-0"}`}
+      style={{ transition: "opacity 0.6s ease" }}
+    >
+      {children}
+    </section>
+  );
+}
+
+/* ─── BADGE ─── */
+function Badge({ children }) {
+  return (
+    <span className="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-indigo-50 text-indigo-600 border border-indigo-100/80">
+      {children}
+    </span>
+  );
+}
+
+/* ─── MAIN APP ─── */
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <div className="font-sans text-gray-800 overflow-x-hidden">
+    <div className="font-sans text-slate-600 overflow-x-hidden bg-white">
 
-      {/* ── TOP INFO BAR ── */}
-      {/* <div className="bg-[#0d1b4b] text-white text-xs sm:text-sm px-4 sm:px-8 py-2 flex flex-col sm:flex-row justify-between items-center gap-1">
-        <div className="flex flex-wrap gap-4 justify-center sm:justify-start">
-          <span className="flex items-center gap-1">📍 127/5 Mark Street, New York</span>
-          <span className="flex items-center gap-1">✉️ info@yourmail.com</span>
-        </div>
-        <span className="flex items-center gap-1">🕐 Opening Hours: Monday to Saturday · 8 Am to 5 Pm</span>
-      </div> */}
-
-      {/* ── HEADER ── */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      {/* ════════════════════ HEADER ════════════════════ */}
+      <header
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+          scrolled ? "glass shadow-sm" : "bg-white/60 backdrop-blur-md"
+        }`}
+      >
+        <div className="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 bg-[#0d1b4b] rounded flex items-center justify-center text-white font-bold text-lg">E</div>
-            <span className="text-xl font-extrabold text-[#0d1b4b] tracking-wide">SRI PRAJNA GROUP OF INSTITUTIONS</span>
-          </div>
-
-          {/* Phone + CTA (desktop) */}
-          <div className="hidden lg:flex items-center gap-5">
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <span className="w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center text-[#0d1b4b]">📞</span>
-              <div>
-                <p className="text-xs text-gray-400">Need Help? Call us Free</p>
-                <p className="font-bold text-[#0d1b4b]">7674966739 / 9441791705</p>
-              </div>
+          <a href="#home" className="flex items-center gap-2.5 group">
+            <img src="/logo.png" alt="Sri Prajna Logo" className="w-10 h-10 rounded-xl object-contain" />
+            <div className="flex flex-col">
+              <span className="text-sm sm:text-base font-extrabold tracking-tight text-slate-800 leading-tight">
+                Sri Prajna Group
+              </span>
+              <span className="text-[10px] font-medium text-indigo-500 tracking-wide uppercase hidden sm:block">of Institutions</span>
             </div>
-            <a href="#apply" className="bg-yellow-400 hover:bg-yellow-300 transition text-[#0d1b4b] font-bold px-5 py-2 rounded-md text-sm shadow">
+          </a>
+
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <a
+                key={link}
+                href={`#${link.toLowerCase().replace(/\s+/g, "-")}`}
+                className="px-4 py-2 text-sm font-medium rounded-lg text-slate-500 hover:text-indigo-600 hover:bg-indigo-50/70 transition-all"
+              >
+                {link}
+              </a>
+            ))}
+            <a
+              href="#apply"
+              className="ml-3 px-5 py-2.5 text-sm font-semibold rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white hover:from-indigo-600 hover:to-violet-600 transition-all shadow-md shadow-indigo-200 hover:shadow-lg hover:shadow-indigo-300"
+            >
               Apply Now
             </a>
-          </div>
+          </nav>
 
           {/* Hamburger */}
           <button
             id="hamburger-btn"
-            className="lg:hidden text-2xl text-[#0d1b4b] focus:outline-none"
+            className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center transition-colors hover:bg-indigo-50"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
-            {menuOpen ? "✕" : "☰"}
+            <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {menuOpen
+                ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              }
+            </svg>
           </button>
         </div>
 
-        {/* Navigation */}
-        <nav className="border-t border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            {/* Desktop Nav */}
-            <ul className="hidden lg:flex items-center gap-1">
+        {/* Mobile Nav */}
+        {menuOpen && (
+          <div className="lg:hidden animate-slide-down bg-white/95 backdrop-blur-xl border-t border-indigo-50">
+            <div className="max-w-6xl mx-auto px-5 py-4 flex flex-col gap-1">
               {navLinks.map((link) => (
-                <li key={link}>
-                  <a
-                    href={`#${link.toLowerCase().replace(/\s+/g, "-")}`}
-                    className="inline-block px-3 py-3 text-sm font-semibold text-gray-700 hover:text-yellow-500 transition border-b-2 border-transparent hover:border-yellow-400"
-                  >
-                    {link}
-                  </a>
-                </li>
+                <a
+                  key={link}
+                  href={`#${link.toLowerCase().replace(/\s+/g, "-")}`}
+                  onClick={() => setMenuOpen(false)}
+                  className="px-4 py-2.5 text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                >
+                  {link}
+                </a>
               ))}
-            </ul>
-
-            {/* Mobile Nav */}
-            {menuOpen && (
-              <ul id="mobile-menu" className="lg:hidden flex flex-col py-2 border-t border-gray-100">
-                {navLinks.map((link) => (
-                  <li key={link}>
-                    <a
-                      href={`#${link.toLowerCase().replace(/\s+/g, "-")}`}
-                      onClick={() => setMenuOpen(false)}
-                      className="block px-2 py-2 text-sm font-semibold text-gray-700 hover:text-yellow-500 hover:bg-gray-50 rounded transition"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-                <li className="mt-2 px-2">
-                  <a href="#apply" className="block bg-yellow-400 text-center text-[#0d1b4b] font-bold py-2 rounded-md text-sm">
-                    Apply Now
-                  </a>
-                </li>
-                <li className="mt-2 px-2">
-                  <a 
-                    href="https://ouzeqnkvmspmpcevnumg.supabase.co/storage/v1/object/public/Parent%20App%20APK/app-debug.apk" 
-                    download
-                    className="block bg-blue-500 hover:bg-blue-600 text-center text-white font-bold py-2 rounded-md text-sm transition"
-                  >
-                    📱 Download Parent App
-                  </a>
-                </li>
-              </ul>
-            )}
+              <div className="flex flex-col gap-2 mt-2 pt-3 border-t border-slate-100">
+                <a href="#apply" className="text-center px-5 py-2.5 text-sm font-semibold rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white shadow-md shadow-indigo-200">
+                  Apply Now
+                </a>
+                <a
+                  href="https://ouzeqnkvmspmpcevnumg.supabase.co/storage/v1/object/public/Parent%20App%20APK/app-debug.apk"
+                  download
+                  className="text-center px-5 py-2.5 text-sm font-semibold rounded-xl bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition"
+                >
+                  📱 Download Parent App
+                </a>
+              </div>
+            </div>
           </div>
-        </nav>
+        )}
       </header>
 
-      {/* ── HERO ── */}
-      <section id="home" className="relative h-[420px] sm:h-[520px] lg:h-[600px] overflow-hidden">
-        <img
-          src="/hero.png"
-          alt="Students learning"
-          className="w-full h-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent flex flex-col justify-center px-6 sm:px-12 lg:px-20">
-          <p className="text-yellow-400 font-semibold text-sm uppercase tracking-widest mb-3">Welcome to SRI PRAJNA GROUP OF INSTITUTIONS</p>
-          <h1 className="text-3xl sm:text-4xl lg:text-4xl font-extrabold text-white max-w-xl leading-tight">
-            SRI PRAJNA IS THE KEY THAT UNLOCKS<br className="hidden sm:block" />
-            <span className="text-yellow-400">GOLDEN DOOR</span> TO FREEDOM
-          </h1>
-          <p className="mt-4 text-gray-200 max-w-lg text-sm sm:text-base leading-relaxed">
-            A Right choice for IITIANS and MEDICOS . We are very happy to announce that we have completed one year sucessfully with your great support . Our intension is to provide better education to mould your children into good citizens of the future .
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <a href="#about-us" className="bg-yellow-400 hover:bg-yellow-300 text-[#0d1b4b] font-bold px-6 py-2.5 rounded-md text-sm transition shadow-md">
-              Read More
-            </a>
-            <a href="#courses" className="bg-white/20 hover:bg-white/30 border border-white text-white font-bold px-6 py-2.5 rounded-md text-sm transition backdrop-blur-sm">
-              Get Started
-            </a>
+      {/* ════════════════════ HERO ════════════════════ */}
+      <section id="home" className="relative min-h-[100vh] flex items-center overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-violet-50">
+        {/* Decorative blobs */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-100/60 rounded-full blur-3xl -translate-y-1/4 translate-x-1/4" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-violet-100/60 rounded-full blur-3xl translate-y-1/4 -translate-x-1/4" />
+        <div className="absolute top-1/2 left-1/2 w-[300px] h-[300px] bg-purple-100/40 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+
+        <div className="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 py-32 grid lg:grid-cols-2 gap-12 items-center">
+          {/* Text */}
+          <div>
+            <div className="animate-fade-in-up mb-4">
+              <Badge>Welcome</Badge>
+            </div>
+
+            <div className="flex items-center gap-5 animate-fade-in-up delay-100">
+              <img src="/logo.png" alt="Sri Prajna Logo" className="w-20 h-20 sm:w-24 sm:h-24 object-contain flex-shrink-0 drop-shadow-md" />
+              <h1>
+                <span className="block text-3xl sm:text-4xl lg:text-5xl font-extrabold gradient-text leading-tight tracking-tight">
+                  Sri Prajna
+                </span>
+                <span className="block text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-800 leading-tight tracking-tight">
+                  Institutions
+                </span>
+              </h1>
+            </div>
+
+            <p className="mt-6 text-xl sm:text-2xl lg:text-3xl font-bold text-slate-600 leading-snug tracking-tight animate-fade-in-up delay-200">
+              Education is the key that unlocks the{" "}
+              <span className="gradient-text">golden door</span> to freedom
+            </p>
+
+            <p className="mt-6 text-base sm:text-lg text-slate-500 max-w-lg leading-relaxed animate-fade-in-up delay-200">
+              A right choice for IITians and Medicos. We provide excellence in education to mould your children into the bright citizens of tomorrow.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-4 animate-fade-in-up delay-300">
+              <a
+                href="#about-us"
+                className="px-7 py-3 text-sm font-semibold rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white hover:from-indigo-600 hover:to-violet-600 transition-all shadow-lg shadow-indigo-200 hover:shadow-xl hover:shadow-indigo-300 hover:-translate-y-0.5"
+              >
+                Explore More
+              </a>
+              <a
+                href="#courses"
+                className="px-7 py-3 text-sm font-semibold rounded-xl border border-indigo-200 text-indigo-600 hover:bg-indigo-50 transition-all hover:-translate-y-0.5"
+              >
+                View Courses
+              </a>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="mt-14 flex gap-10 animate-fade-in-up delay-400">
+              {[
+                { val: "8,000+", label: "Students" },
+                { val: "200+", label: "Teachers" },
+                { val: "99%", label: "Success" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <p className="text-2xl sm:text-3xl font-extrabold text-slate-800">{s.val}</p>
+                  <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider font-medium">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Hero Image */}
+          <div className="hidden lg:block animate-fade-in-up delay-300">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-200 to-violet-200 rounded-3xl rotate-3 scale-105 opacity-40" />
+              <img
+                src="/hero.png"
+                alt="Students learning"
+                className="relative rounded-3xl shadow-2xl shadow-indigo-100 object-cover w-full h-[440px] ring-1 ring-white/60"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float">
+          <div className="w-6 h-10 rounded-full border-2 border-indigo-300/50 flex justify-center pt-2">
+            <div className="w-1 h-2.5 bg-indigo-400/60 rounded-full" />
           </div>
         </div>
       </section>
 
-      {/* ── TOPPERS & HIGH PERFORMERS ── */}
-      <section className="bg-[#0d1b4b] py-12 px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-yellow-400 font-semibold text-sm uppercase tracking-widest">Proud Achievers</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-1">Our Toppers & High Performers</h2>
-            <p className="text-gray-300 mt-2 max-w-xl mx-auto text-sm">
-              Celebrating the outstanding success of our students in competitive and board examinations.
+      {/* ════════════════════ TOPPERS ════════════════════ */}
+      <Section className="py-20 sm:py-28 px-5 sm:px-8 bg-gradient-to-b from-violet-50/60 to-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <Badge>Proud Achievers</Badge>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight">
+              Our Toppers &amp; High Performers
+            </h2>
+            <p className="mt-3 text-slate-400 max-w-md mx-auto text-sm">
+              Celebrating the outstanding success of our students in competitive and board examinations
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {toppers.map((t, i) => (
               <div
                 key={i}
-                className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 flex items-center gap-5 hover:bg-white/20 transition duration-300 shadow-xl"
+                className="group p-5 rounded-2xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-lg hover:shadow-indigo-50 transition-all duration-300 hover-lift"
               >
-                <img src={t.img} alt={t.name} className="w-20 h-20 rounded-full border-4 border-yellow-400 object-cover shadow-md" />
-                <div>
-                  <h3 className="font-bold text-white text-lg">{t.name}</h3>
-                  <p className="text-xs text-yellow-400 font-semibold uppercase tracking-wide mt-1">{t.exam}</p>
-                  <div className="mt-2 text-sm text-gray-200">
-                    <span className="font-semibold block">Marks: <span className="text-white">{t.marks}</span></span>
-                    <span className="font-semibold block">Rank: <span className="text-yellow-300 text-base">{t.rank}</span></span>
+                <div className="flex items-center gap-4">
+                  <img
+                    src={t.img}
+                    alt={t.name}
+                    className="w-14 h-14 rounded-full object-cover ring-2 ring-indigo-100 group-hover:ring-indigo-300 transition-all shadow-sm"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-slate-800 text-sm truncate">{t.name}</h3>
+                    <p className="text-xs text-indigo-500 font-medium mt-0.5">{t.exam}</p>
+                    <div className="flex gap-4 mt-2">
+                      <span className="text-xs text-slate-400">
+                        Marks: <span className="text-slate-700 font-medium">{t.marks}</span>
+                      </span>
+                      <span className="text-xs text-slate-400">
+                        Rank: <span className="text-indigo-500 font-medium">{t.rank}</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      </Section>
 
-      {/* ── ABOUT + PRINCIPAL'S MESSAGE ── */}
-      <section id="about-us" className="py-16 px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-stretch">
+      {/* ════════════════════ ABOUT + PRINCIPAL ════════════════════ */}
+      <Section id="about-us" className="py-20 sm:py-28 px-5 sm:px-8 bg-white">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
 
           {/* About */}
-          <div className="flex flex-col">
-            <p className="text-yellow-500 font-semibold text-sm uppercase tracking-widest mb-1">About Us</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0d1b4b] leading-snug">
-              Welcome to <span className="text-yellow-400">SRI PRAJNA GROUP</span>
+          <div>
+            <Badge>About Us</Badge>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight leading-tight">
+              Welcome to{" "}
+              <span className="gradient-text">Sri Prajna Group</span>
             </h2>
-            <p className="mt-4 text-gray-500 leading-relaxed">
-              Our intension is to provide better education to mould your children into good citizens of the future. We will make genuine efforts to make your dreams regarding your children career come true. Best service is our motto.
+            <p className="mt-5 text-slate-500 leading-relaxed">
+              Our intention is to provide better education to mould your children into good citizens of the future. We will make genuine efforts to make your dreams regarding your children's career come true.
             </p>
-            <p className="mt-3 text-gray-500 leading-relaxed">
-              We will make genuine efforts to make your dreams regarding your children career come true. Best service is our motto.
+            <p className="mt-3 text-slate-500 leading-relaxed">
+              Best service is our motto. We will make genuine efforts to make your dreams regarding your children's career come true.
             </p>
-            <div className="mt-6 flex gap-3">
-              <a href="#courses" className="bg-yellow-400 hover:bg-yellow-300 text-[#0d1b4b] font-bold px-6 py-2.5 rounded-md text-sm transition shadow">
+
+            <div className="mt-7 flex gap-3">
+              <a href="#courses" className="px-6 py-2.5 text-sm font-semibold rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white hover:from-indigo-600 hover:to-violet-600 transition-all shadow-md shadow-indigo-200">
                 Learn More
               </a>
-              <a href="#contact" className="border border-[#0d1b4b] text-[#0d1b4b] hover:bg-[#0d1b4b] hover:text-white font-bold px-6 py-2.5 rounded-md text-sm transition">
+              <a href="#contact" className="px-6 py-2.5 text-sm font-semibold rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all">
                 Contact Us
               </a>
             </div>
 
-            {/* About image */}
-            <div className="mt-auto pt-8 rounded-xl overflow-hidden shadow-lg">
-              <img src="/about.png" alt="Students studying" className="w-full object-cover h-48 sm:h-64 rounded-xl" />
+            {/* About Image */}
+            <div className="mt-10 rounded-2xl overflow-hidden shadow-lg shadow-indigo-50 ring-1 ring-slate-100">
+              <img src="/about.png" alt="Students studying" className="w-full h-52 sm:h-64 object-cover" />
             </div>
           </div>
 
           {/* Principal's Message */}
-          <div className="flex flex-col">
-            <p className="text-yellow-500 font-semibold text-sm uppercase tracking-widest mb-1">From the Desk</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0d1b4b] mb-6">Principal's Message</h2>
+          <div>
+            <Badge>From the Desk</Badge>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mb-8">
+              Principal's Message
+            </h2>
 
-            <div className="flex-1 flex flex-col justify-center">
-              {/* Photo + Name */}
-              <div className="flex flex-col items-center mb-6">
+            {/* Photo + Name */}
+            <div className="flex flex-col items-center mb-8">
+              <div className="relative">
                 <img
                   src={principalImg}
                   alt="Principal"
-                  className="w-44 h-56 rounded-2xl object-cover border-4 border-yellow-400 shadow-xl"
+                  className="w-36 h-44 rounded-2xl object-cover shadow-lg shadow-indigo-50 ring-1 ring-slate-100"
                 />
-                <h3 className="mt-4 font-bold text-[#0d1b4b] text-lg text-center">Sri. K. ABHI </h3>
-                <p className="text-xs text-yellow-500 font-semibold uppercase tracking-wide text-center">Principal, Sri Prajna Group</p>
+                <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-md">
+                  <span className="text-white text-xs">✦</span>
+                </div>
               </div>
+              <h3 className="mt-5 font-bold text-slate-800">Sri. K. ABHI</h3>
+              <p className="text-xs text-indigo-500 font-medium uppercase tracking-wider mt-1">Principal, Sri Prajna Group</p>
+            </div>
 
-              {/* Quotation */}
-              <div className="relative border-l-4 border-yellow-400 pl-5 py-3 bg-yellow-50/40 rounded-r-xl">
-                <span className="absolute -top-3 left-1 text-yellow-400 text-5xl leading-none font-serif select-none">"</span>
-                <p className="text-gray-600 italic leading-relaxed text-sm sm:text-base mt-3">
-                  Education is not the filling of a pail, but the lighting of a fire. At Sri Prajna, we strive to ignite the flame of curiosity, discipline, and excellence in every child. Together, let us build a future where our children shine as the brightest stars.
-                </p>
-              </div>
-              <div className="mt-4 flex items-center gap-3 justify-end">
-                <div className="h-px flex-1 bg-gray-200"></div>
-                <span className="text-[#0d1b4b] font-bold text-sm italic">— Sri. Ramesh Babu</span>
-                <span className="text-yellow-500 text-lg">✍️</span>
+            {/* Quote */}
+            <div className="relative p-6 rounded-2xl bg-indigo-50/50 border border-indigo-100/60">
+              <span className="absolute -top-3 left-6 text-4xl text-indigo-300 font-serif select-none leading-none">"</span>
+              <p className="text-slate-500 italic leading-relaxed text-sm mt-2">
+                Education is not the filling of a pail, but the lighting of a fire. At Sri Prajna, we strive to ignite the flame of curiosity, discipline, and excellence in every child. Together, let us build a future where our children shine as the brightest stars.
+              </p>
+              <div className="mt-4 flex items-center gap-3">
+                <div className="h-px flex-1 bg-indigo-100" />
+                <span className="text-slate-700 font-semibold text-xs italic">— Sri. Ramesh Babu</span>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </Section>
 
-      {/* ── STATS BANNER ── */}
-      {/* <section className="bg-yellow-400 py-12 px-4">
-        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {stats.map((s, i) => (
-            <div key={i} className="flex flex-col items-center">
-              <span className="text-3xl sm:text-4xl font-extrabold text-[#0d1b4b]">{s.value}</span>
-              <span className="text-sm font-semibold text-[#0d1b4b]/80 mt-1">{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </section> */}
+      {/* ════════════════════ MISSION & PROMISE ════════════════════ */}
+      <Section className="py-20 sm:py-28 px-5 sm:px-8 bg-gradient-to-b from-white to-indigo-50/40">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-6">
 
-      {/* ── MISSION & PROMISE SECTION ── */}
-      <section className="py-16 px-4 sm:px-8 bg-white">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 items-stretch">
           {/* We Aim */}
-          <div className="bg-[#0d1b4b] border border-white/10 rounded-2xl p-8 sm:p-10 shadow-xl text-white hover:scale-[1.02] transition-transform duration-300">
-            <h2 className="text-2xl sm:text-3xl font-extrabold mb-8 flex items-center gap-3">
-              <span className="w-12 h-12 rounded-full bg-yellow-400 flex items-center justify-center text-[#0d1b4b] text-2xl shadow-md">🎯</span>
-              We Aim:
-            </h2>
-            <ul className="space-y-5">
-              {[
-                "To facilitate better learning processes",
-                "To give better education with utmost discipilne",
-                "To strengthen inner abilities of the students",
-                "To pave a right track for siunding academic career",
-                "To inculcate good learning habits and values",
-                "To create a supportive environment for holistic development."
-              ].map((aim, i) => (
-                <li key={i} className="flex items-start gap-4">
-                  <span className="text-yellow-400 mt-1 flex-shrink-0 text-lg">✔</span>
-                  <span className="text-gray-200 leading-relaxed font-medium">{aim}</span>
+          <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-100/60 hover-lift">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-lg shadow-md shadow-indigo-200">🎯</div>
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight">We Aim</h2>
+            </div>
+            <ul className="space-y-4">
+              {aims.map((aim, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-indigo-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-slate-500 text-sm leading-relaxed">{aim}</span>
                 </li>
               ))}
             </ul>
           </div>
+
           {/* We Promise */}
-          <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8 sm:p-10 shadow-lg hover:shadow-xl hover:scale-[1.02] transition-transform duration-300 text-[#0d1b4b]">
-            <h2 className="text-2xl sm:text-3xl font-extrabold mb-8 flex items-center gap-3">
-              <span className="w-12 h-12 rounded-full bg-yellow-400 flex items-center justify-center text-[#0d1b4b] text-2xl shadow-md">🤝</span>
-              We Promise to Provide:
-            </h2>
+          <div className="p-8 sm:p-10 rounded-3xl bg-white border border-slate-100 shadow-sm hover-lift">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-11 h-11 rounded-xl bg-indigo-50 flex items-center justify-center text-lg border border-indigo-100/60">🤝</div>
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight">We Promise to Provide</h2>
+            </div>
             <ul className="space-y-4">
-              {[
-                "Child centered learning program",
-                "Well design curriculum with national standards and latest trends",
-                "well trained faculty",
-                "Standard content for concept oriented learning in all subjects",
-                "Tests to develop competitive skills right from 3rd standard",
-                "Safe and secure transport facilities",
-                "Special courses like Vedic maths and abacus as part of mainstream curriculum",
-                "Unwavering support throughout your educational journey."
-              ].map((promise, i) => (
-                <li key={i} className="flex items-start gap-4">
-                  <span className="text-yellow-500 mt-1 flex-shrink-0 text-lg">✦</span>
-                  <span className="text-gray-600 leading-relaxed font-medium">{promise}</span>
+              {promises.map((promise, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 mt-2 flex-shrink-0" />
+                  <span className="text-slate-500 text-sm leading-relaxed">{promise}</span>
                 </li>
               ))}
             </ul>
           </div>
         </div>
-      </section>
+      </Section>
 
-      {/* ── TEACHER–STUDENT RATIO ── */}
-      <section id="courses" className="py-16 px-4 sm:px-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <p className="text-yellow-500 font-semibold text-sm uppercase tracking-widest">Personalized Attention</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0d1b4b] mt-1">Teacher – Student Ratio</h2>
-            <p className="text-gray-500 mt-2 max-w-xl mx-auto text-sm">
-              We maintain optimal class sizes to ensure every student receives the individual attention they deserve.
+      {/* ════════════════════ TEACHER-STUDENT RATIO ════════════════════ */}
+      <Section id="courses" className="py-20 sm:py-28 px-5 sm:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <Badge>Personalized Attention</Badge>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight">
+              Teacher – Student Ratio
+            </h2>
+            <p className="mt-3 text-slate-400 max-w-md mx-auto text-sm">
+              We maintain optimal class sizes to ensure every student receives individual attention
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid lg:grid-cols-2 gap-6">
             {/* School Ratio */}
-            <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
-              <div className="bg-[#0d1b4b] px-6 py-4 flex items-center gap-3">
-                <span className="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center text-xl">🏫</span>
-                <h3 className="text-white font-bold text-lg">School Classes</h3>
+            <div className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover-lift">
+              <div className="px-6 py-4 bg-gradient-to-r from-indigo-50 to-violet-50 border-b border-indigo-100/50 flex items-center gap-3">
+                <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-sm shadow-sm shadow-indigo-200">🏫</span>
+                <h3 className="text-slate-800 font-semibold text-sm">School Classes</h3>
               </div>
-              <div className="divide-y divide-gray-100">
-                {[
-                  { grade: "Nursery to 2nd Class", ratio: "1 : 20", icon: "🧒" },
-                  { grade: "3rd Class to 4th Class", ratio: "1 : 25", icon: "📖" },
-                  { grade: "5th Class to 8th Class", ratio: "1 : 30", icon: "📝" },
-                  { grade: "9th Class to 10th Class", ratio: "1 : 40", icon: "🎓" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center justify-between px-6 py-5 hover:bg-yellow-50/60 transition group">
-                    <div className="flex items-center gap-4">
-                      <span className="text-2xl group-hover:scale-110 transition-transform">{item.icon}</span>
-                      <span className="font-semibold text-[#0d1b4b] text-sm sm:text-base">{item.grade}</span>
+              <div className="divide-y divide-slate-50 bg-white">
+                {schoolRatios.map((item, i) => (
+                  <div key={i} className="flex items-center justify-between px-6 py-4 hover:bg-indigo-50/40 transition-colors group">
+                    <div className="flex items-center gap-3">
+                      <span className="text-lg group-hover:scale-110 transition-transform">{item.icon}</span>
+                      <span className="font-medium text-slate-600 text-sm">{item.grade}</span>
                     </div>
-                    <span className="bg-[#0d1b4b] text-yellow-400 font-extrabold text-sm sm:text-base px-4 py-1.5 rounded-full shadow-sm">{item.ratio}</span>
+                    <span className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100/80">
+                      {item.ratio}
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Intermediate Courses */}
-            <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
-              <div className="bg-yellow-400 px-6 py-4 flex items-center gap-3">
-                <span className="w-10 h-10 rounded-full bg-[#0d1b4b] flex items-center justify-center text-xl text-yellow-400">🎯</span>
-                <h3 className="text-[#0d1b4b] font-bold text-lg">Our Intermediate Courses</h3>
+            <div className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover-lift">
+              <div className="px-6 py-4 bg-gradient-to-r from-violet-50 to-purple-50 border-b border-violet-100/50 flex items-center gap-3">
+                <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center text-sm shadow-sm shadow-violet-200">🎯</span>
+                <h3 className="text-slate-800 font-semibold text-sm">Our Intermediate Courses</h3>
               </div>
-              <div className="divide-y divide-gray-100">
-                {[
-                  { course: "IPE + EAPCET", ratio: "1 : 40", icon: "⚡" },
-                  { course: "IPE + JEE MAINS", ratio: "1 : 40", icon: "🚀" },
-                  { course: "IPE + NEET", ratio: "1 : 40", icon: "🩺" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center justify-between px-6 py-5 hover:bg-yellow-50/60 transition group">
-                    <div className="flex items-center gap-4">
-                      <span className="text-2xl group-hover:scale-110 transition-transform">{item.icon}</span>
-                      <span className="font-semibold text-[#0d1b4b] text-sm sm:text-base">{item.course}</span>
+              <div className="divide-y divide-slate-50 bg-white">
+                {intermediateCourses.map((item, i) => (
+                  <div key={i} className="flex items-center justify-between px-6 py-4 hover:bg-violet-50/40 transition-colors group">
+                    <div className="flex items-center gap-3">
+                      <span className="text-lg group-hover:scale-110 transition-transform">{item.icon}</span>
+                      <span className="font-medium text-slate-600 text-sm">{item.course}</span>
                     </div>
-                    <span className="bg-yellow-400 text-[#0d1b4b] font-extrabold text-sm sm:text-base px-4 py-1.5 rounded-full shadow-sm">{item.ratio}</span>
+                    <span className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-gradient-to-r from-indigo-500 to-violet-500 text-white shadow-sm">
+                      {item.ratio}
+                    </span>
                   </div>
                 ))}
               </div>
-              {/* Extra info */}
-              <div className="px-6 py-4 bg-gray-50 border-t border-gray-100">
-                <p className="text-xs text-gray-500 text-center italic">All intermediate courses include comprehensive IPE preparation alongside competitive exam coaching.</p>
+              <div className="px-6 py-3.5 bg-slate-50/50 border-t border-slate-100">
+                <p className="text-xs text-slate-400 text-center">
+                  All intermediate courses include comprehensive IPE preparation alongside competitive exam coaching.
+                </p>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </Section>
 
-
-      {/* ── APPLY CTA ── */}
-      <section id="apply" className="py-16 px-4 sm:px-8 bg-yellow-50">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-yellow-500 font-semibold text-sm uppercase tracking-widest">Join Us Today</p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0d1b4b] mt-2 mb-4">
+      {/* ════════════════════ APPLY CTA ════════════════════ */}
+      <Section id="apply" className="py-20 sm:py-28 px-5 sm:px-8 bg-gradient-to-b from-indigo-50/50 to-violet-50/50">
+        <div className="max-w-xl mx-auto text-center">
+          <Badge>Join Us Today</Badge>
+          <h2 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight">
             Admissions Are Open for 2026–27
           </h2>
-          <p className="text-gray-500 text-sm mb-8 max-w-xl mx-auto">
-            Secure your spot at one of the best educational institutions. Limited seats available — apply now before the deadline.
+          <p className="mt-3 text-slate-500 text-sm">
+            Secure your spot at one of the best educational institutions. Limited seats available — apply now.
           </p>
-          <form className="flex flex-col sm:flex-row gap-3 justify-center">
+          <form className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <input
               id="apply-name"
               type="text"
               placeholder="Your full name"
-              className="border border-gray-300 rounded-md px-4 py-2.5 text-sm flex-1 max-w-xs focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="px-4 py-3 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400/30 focus:border-indigo-300 transition-all flex-1 max-w-xs shadow-sm"
             />
             <input
               id="apply-email"
               type="email"
               placeholder="Your email address"
-              className="border border-gray-300 rounded-md px-4 py-2.5 text-sm flex-1 max-w-xs focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="px-4 py-3 text-sm rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400/30 focus:border-indigo-300 transition-all flex-1 max-w-xs shadow-sm"
             />
             <button
               id="apply-submit"
               type="submit"
-              className="bg-yellow-400 hover:bg-yellow-300 text-[#0d1b4b] font-bold px-6 py-2.5 rounded-md text-sm transition shadow-md"
+              className="px-7 py-3 text-sm font-semibold rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white hover:from-indigo-600 hover:to-violet-600 transition-all shadow-lg shadow-indigo-200 hover:shadow-xl hover:shadow-indigo-300 hover:-translate-y-0.5"
             >
               Apply Now
             </button>
           </form>
         </div>
-      </section>
+      </Section>
 
-      {/* ── CONTACT ── */}
-      <section id="contact" className="py-16 px-4 sm:px-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto grid sm:grid-cols-3 gap-8 text-center">
-          {[
-            { icon: "📍", title: "Our Location", detail: "JVR Bhavan , Near SBI Bank ,Jaggampeta,kakinada Dist,Andhra Pradesh" },
-            { icon: "📞", title: "Phone Number", detail: "+91 7674966739 / 9441791705" },
-            { icon: "✉️", title: "Email Address", detail: "sripranjnagroup@gmail.com" },
-          ].map((item, i) => (
-            <div key={i} className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100 hover:border-yellow-400 hover:shadow-md transition-all duration-200">
-              <div className="text-4xl mb-3">{item.icon}</div>
-              <h3 className="font-bold text-[#0d1b4b] text-base">{item.title}</h3>
-              <p className="text-sm text-gray-500 mt-1">{item.detail}</p>
-            </div>
-          ))}
+      {/* ════════════════════ CONTACT ════════════════════ */}
+      <Section id="contact" className="py-20 sm:py-28 px-5 sm:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <Badge>Get in Touch</Badge>
+            <h2 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight">
+              Contact Us
+            </h2>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-5">
+            {contactInfo.map((item, i) => (
+              <div
+                key={i}
+                className="group text-center p-7 rounded-2xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-lg hover:shadow-indigo-50 transition-all duration-300 hover-lift"
+              >
+                <div className="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center text-2xl mx-auto mb-4 group-hover:bg-indigo-100 transition-colors">{item.icon}</div>
+                <h3 className="font-semibold text-slate-800 text-sm">{item.title}</h3>
+                <p className="text-sm text-slate-400 mt-2 leading-relaxed">{item.detail}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </section>
+      </Section>
 
-      {/* ── FOOTER ── */}
-      <footer className="bg-[#0d1b4b] text-white pt-14 pb-6 px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+      {/* ════════════════════ FOOTER ════════════════════ */}
+      <footer className="bg-gradient-to-b from-indigo-50/60 to-violet-50/60 border-t border-indigo-100/40 pt-16 pb-8 px-5 sm:px-8">
+        <div className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 bg-yellow-400 rounded flex items-center justify-center text-[#0d1b4b] font-bold">E</div>
-              <span className="font-extrabold text-lg tracking-wide">SRI PRAJNA GROUP</span>
+            <div className="flex items-center gap-2.5 mb-4">
+              <img src="/logo.png" alt="Sri Prajna Logo" className="w-9 h-9 rounded-xl object-contain" />
+              <span className="font-bold text-base tracking-tight text-slate-800">Sri Prajna Group of Institutions</span>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-slate-400 text-sm leading-relaxed">
               Empowering minds, building futures. Join thousands of students on their journey to excellence.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-bold text-yellow-400 mb-3 text-sm uppercase tracking-widest">Quick Links</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
-              {["About Us", "Courses", "Events", "Contact"].map((l) => (
-                <li key={l}><a href={`#${l.toLowerCase().replace(" ", "-")}`} className="hover:text-yellow-400 transition">{l}</a></li>
+            <h4 className="font-semibold text-xs uppercase tracking-widest text-slate-500 mb-4">Quick Links</h4>
+            <ul className="space-y-2.5">
+              {["About Us", "Courses", "Apply", "Contact"].map((l) => (
+                <li key={l}>
+                  <a href={`#${l.toLowerCase().replace(" ", "-")}`} className="text-sm text-slate-400 hover:text-indigo-500 transition-colors">
+                    {l}
+                  </a>
+                </li>
               ))}
             </ul>
           </div>
 
           {/* Courses */}
           <div>
-            <h4 className="font-bold text-yellow-400 mb-3 text-sm uppercase tracking-widest">Our Courses</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <h4 className="font-semibold text-xs uppercase tracking-widest text-slate-500 mb-4">Our Courses</h4>
+            <ul className="space-y-2.5">
               {courses.slice(0, 5).map((c) => (
-                <li key={c.title}><a href="#courses" className="hover:text-yellow-400 transition">{c.title}</a></li>
+                <li key={c.title}>
+                  <a href="#courses" className="text-sm text-slate-400 hover:text-indigo-500 transition-colors">
+                    {c.title}
+                  </a>
+                </li>
               ))}
             </ul>
           </div>
 
           {/* Newsletter */}
           <div>
-            <h4 className="font-bold text-yellow-400 mb-3 text-sm uppercase tracking-widest">Newsletter</h4>
-            <p className="text-gray-400 text-sm mb-3">Subscribe to get updates on new courses and events.</p>
+            <h4 className="font-semibold text-xs uppercase tracking-widest text-slate-500 mb-4">Newsletter</h4>
+            <p className="text-slate-400 text-sm mb-4">Subscribe to get updates on new courses and events.</p>
             <div className="flex gap-2">
               <input
                 id="newsletter-email"
                 type="email"
                 placeholder="Your email"
-                className="bg-white/10 border border-white/20 rounded-md px-3 py-2 text-sm flex-1 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                className="flex-1 px-3.5 py-2.5 text-sm rounded-xl bg-white border border-slate-200 text-slate-700 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-400/30 focus:border-indigo-300 transition-all shadow-sm"
               />
               <button
                 id="newsletter-submit"
-                className="bg-yellow-400 hover:bg-yellow-300 text-[#0d1b4b] font-bold px-3 py-2 rounded-md text-sm transition"
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 text-white text-sm font-semibold hover:from-indigo-600 hover:to-violet-600 transition-all shadow-md shadow-indigo-200"
               >
                 →
               </button>
@@ -523,9 +628,10 @@ export default function App() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-5 flex flex-col sm:flex-row justify-between items-center gap-2 text-gray-400 text-xs">
-          <span>© 2026 Edubin. All rights reserved.</span>
-          <span>Designed with ❤️ for Education</span>
+        {/* Bottom */}
+        <div className="border-t border-indigo-100/60 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-400">
+          <span>© 2026 Sri Prajna Group of Institutions. All rights reserved.</span>
+          <span>Designed with care for education</span>
         </div>
       </footer>
 

@@ -58,7 +58,7 @@ const intermediateCourses = [
 const contactInfo = [
   { icon: "📍", title: "Our Location", detail: "JVR Bhavan, Near SBI Bank, Jaggampeta, Kakinada Dist, Andhra Pradesh" },
   { icon: "📞", title: "Phone Number", detail: "+91 7674966739 / 9441791705" },
-  { icon: "✉️", title: "Email Address", detail: "sripranjnagroup@gmail.com" },
+  { icon: "✉️", title: "Email Address", detail: "sriprajnaschooljpt@gmail.com" },
 ];
 
 /* ─── HOOKS ─── */
@@ -120,9 +120,8 @@ export default function App() {
 
       {/* ════════════════════ HEADER ════════════════════ */}
       <header
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          scrolled ? "glass shadow-sm" : "bg-white/60 backdrop-blur-md"
-        }`}
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "glass shadow-sm" : "bg-white/60 backdrop-blur-md"
+          }`}
       >
         <div className="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
           {/* Logo */}
@@ -130,7 +129,7 @@ export default function App() {
             <img src="/logo.png" alt="Sri Prajna Logo" className="w-10 h-10 rounded-xl object-contain" />
             <div className="flex flex-col">
               <span className="text-sm sm:text-base font-extrabold tracking-tight text-slate-800 leading-tight">
-                Sri Prajna Group
+                Sri Prajna Institutions
               </span>
               <span className="text-[10px] font-medium text-indigo-500 tracking-wide uppercase hidden sm:block">of Institutions</span>
             </div>
@@ -255,8 +254,8 @@ export default function App() {
             {/* Quick Stats */}
             <div className="mt-14 flex gap-10 animate-fade-in-up delay-400">
               {[
-                { val: "8,000+", label: "Students" },
-                { val: "200+", label: "Teachers" },
+                { val: "800+", label: "Students" },
+                { val: "20+", label: "Teachers" },
                 { val: "99%", label: "Success" },
               ].map((s) => (
                 <div key={s.label}>
@@ -341,7 +340,7 @@ export default function App() {
             <Badge>About Us</Badge>
             <h2 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight leading-tight">
               Welcome to{" "}
-              <span className="gradient-text">Sri Prajna Group</span>
+              <span className="gradient-text">Sri Prajna Institutions</span>
             </h2>
             <p className="mt-5 text-slate-500 leading-relaxed">
               Our intention is to provide better education to mould your children into good citizens of the future. We will make genuine efforts to make your dreams regarding your children's career come true.
@@ -369,7 +368,7 @@ export default function App() {
           <div>
             <Badge>From the Desk</Badge>
             <h2 className="mt-4 text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight mb-8">
-              Principal's Message
+              Chairman's Message
             </h2>
 
             {/* Photo + Name */}
@@ -384,8 +383,8 @@ export default function App() {
                   <span className="text-white text-xs">✦</span>
                 </div>
               </div>
-              <h3 className="mt-5 font-bold text-slate-800">Sri. K. ABHI</h3>
-              <p className="text-xs text-indigo-500 font-medium uppercase tracking-wider mt-1">Principal, Sri Prajna Group</p>
+              <h3 className="mt-5 font-bold text-slate-800">Sri. B. Nagababu</h3>
+              <p className="text-xs text-indigo-500 font-medium uppercase tracking-wider mt-1">Chairman, Sri Prajna Institutions</p>
             </div>
 
             {/* Quote */}
@@ -396,7 +395,7 @@ export default function App() {
               </p>
               <div className="mt-4 flex items-center gap-3">
                 <div className="h-px flex-1 bg-indigo-100" />
-                <span className="text-slate-700 font-semibold text-xs italic">— Sri. Ramesh Babu</span>
+                <span className="text-slate-700 font-semibold text-xs italic">— Sri. B. Nagababu</span>
               </div>
             </div>
           </div>
@@ -572,7 +571,7 @@ export default function App() {
           <div>
             <div className="flex items-center gap-2.5 mb-4">
               <img src="/logo.png" alt="Sri Prajna Logo" className="w-9 h-9 rounded-xl object-contain" />
-              <span className="font-bold text-base tracking-tight text-slate-800">Sri Prajna Group of Institutions</span>
+              <span className="font-bold text-base tracking-tight text-slate-800">Sri Prajna Institutions</span>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed">
               Empowering minds, building futures. Join thousands of students on their journey to excellence.
@@ -630,7 +629,7 @@ export default function App() {
 
         {/* Bottom */}
         <div className="border-t border-indigo-100/60 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-400">
-          <span>© 2026 Sri Prajna Group of Institutions. All rights reserved.</span>
+          <span>© 2026 Sri Prajna Institutions. All rights reserved.</span>
           <span>Designed with care for education</span>
         </div>
       </footer>

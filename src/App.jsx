@@ -17,7 +17,7 @@ import eventDignitariesGroup from "./Images/events/event_dignitaries_group.jpg";
 import eventStudentAssembly from "./Images/events/event_student_assembly.jpg";
 import eventTraditionalFest from "./Images/events/event_traditional_fest.jpg";
 
-const heroImages = [hero1, hero2, hero3, hero4, hero5];
+const heroImages = [hero1, hero2, hero3, hero4, hero5]; 
 
 /* ─── DATA ─── */
 const navLinks = ["Home", "About Us", "Courses", "Events", "Contact"];

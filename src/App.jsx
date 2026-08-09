@@ -820,6 +820,33 @@ export default function App() {
             </svg>
           </button>
         </div>
+
+        {/* Mobile Nav */}
+        {menuOpen && (
+          <div className="lg:hidden animate-slide-down bg-[#0b2545] border-t border-white/5 shadow-2xl font-sans">
+            <div className="max-w-[1190px] mx-auto px-5 py-5 flex flex-col gap-1.5">
+              {navLinks.map((link) => (
+                <a
+                  key={link}
+                  href={`#${link.toLowerCase().replace(/\s+/g, "-")}`}
+                  onClick={() => setMenuOpen(false)}
+                  className="px-4.5 py-3 text-sm font-bold text-slate-200 hover:text-[#eeb902] hover:bg-[#134074]/30 rounded-xl transition-all"
+                >
+                  {link}
+                </a>
+              ))}
+              <div className="flex flex-col gap-3 mt-3 pt-4 border-t border-white/5">
+                <a 
+                  href="#contact" 
+                  onClick={() => setMenuOpen(false)}
+                  className="text-center px-6 py-3 text-sm font-extrabold rounded-full btn-gold"
+                >
+                  Apply Now
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* ════════════════════ HERO ════════════════════ */}

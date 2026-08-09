@@ -878,7 +878,7 @@ export default function App() {
 
             <p className="mt-8 text-xl sm:text-2xl lg:text-3xl font-bold text-slate-100 leading-snug tracking-tight font-serif animate-fade-in-up delay-200">
               Education is the key that unlocks the{" "}
-              <span className="text-[#eeb902] underline decoration-[#eeb902]/30 decoration-wavy underline-offset-8">golden door</span> to freedom.
+              <span className="text-[#eeb902]">golden door</span> to freedom.
             </p>
 
             <p className="mt-6 text-sm sm:text-base text-slate-300 max-w-lg leading-relaxed font-sans animate-fade-in-up delay-200">

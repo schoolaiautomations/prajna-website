@@ -268,7 +268,7 @@ const eventGallery = [
 ];
 
 const contactInfo = [
-  { icon: "📍", title: "Our Location", detail: "SITARAMA COLLEGE, Kathipudi Kakinada Road Sankhava, Dist, Kathipudi, Andhra Pradesh 533444" },
+  { icon: "📍", title: "Our Location", detail: "SITARAMA COLLEGE, Kathipudi, Sankhavaram Mandal, Kakinada District, Andhra Pradesh 533444" },
   { icon: "📞", title: "Phone Number", detail: "+91 9030768981\u00a0\u00a0\u00a0|\u00a0\u00a0\u00a0+91 9949847313" },
 
 
@@ -1227,7 +1227,7 @@ export default function App() {
             <div className="mt-8 space-y-4 text-xs text-slate-300">
               <div className="flex items-start gap-2.5">
                 <span className="text-[#eeb902] mt-0.5">📍</span>
-                <span className="leading-relaxed">SITARAMA COLLEGE, Kathipudi Kakinada Road Sankhava, Dist, Kathipudi, Andhra Pradesh 533444</span>
+                <span className="leading-relaxed">SITARAMA COLLEGE, Kathipudi, Sankhavaram Mandal, Kakinada District, Andhra Pradesh 533444</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <span className="text-[#eeb902]">📞</span>

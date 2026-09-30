@@ -5,6 +5,7 @@ import hero2 from "./Images/sitarama/hero2.jpg";
 import hero3 from "./Images/sitarama/hero3.jpg";
 import hero4 from "./Images/sitarama/hero4.jpg";
 import hero5 from "./Images/sitarama/hero5.jpg";
+import achievementImg3062 from "./Images/achievements/IMG_3062.JPG";
 
 import eventFlagRally from "./Images/events/event_flag_rally.jpg";
 import eventHealthCamp from "./Images/events/event_health_camp.jpg";
@@ -20,7 +21,7 @@ import lab1 from "./Images/events/lab1.jpg";
 import lab2 from "./Images/events/lab2.jpg";
 import lab3 from "./Images/events/lab3.jpg";
 
-const heroImages = [hero1, hero2, hero3, hero4, hero5]; 
+const heroImages = [achievementImg3062, hero1, hero2, hero3, hero4, hero5]; 
 
 /* ─── DATA ─── */
 const navLinks = ["Home", "About Us", "Labs", "Courses", "Events", "Contact"];
@@ -268,7 +269,9 @@ const eventGallery = [
 
 const contactInfo = [
   { icon: "📍", title: "Our Location", detail: "SITARAMA COLLEGE, Kathipudi Kakinada Road Sankhava, Dist, Kathipudi, Andhra Pradesh 533444" },
-  { icon: "📞", title: "Phone Number", detail: "+91 " },
+  { icon: "📞", title: "Phone Number", detail: "+91 9030768981\u00a0\u00a0\u00a0|\u00a0\u00a0\u00a0+91 9949847313" },
+
+
   { icon: "✉️", title: "Email Address", detail: "sitarama07139@gmail.com" },
 ];
 
@@ -411,9 +414,8 @@ function JuniorCollegeCard({ yearData }) {
         </div>
       </div>
 
-      <div className="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between font-sans">
+      <div className="mt-8 pt-5 border-t border-slate-100 font-sans">
         <span className="text-xs text-slate-400">Junior College Stream</span>
-        <span className="gold-link text-sm">Admissions Open →</span>
       </div>
     </div>
   );
@@ -691,7 +693,9 @@ function HeroCarousel() {
             key={index}
             src={img}
             alt={`Sitarama Degree College Event ${index + 1}`}
-            className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out ${
+            className={`absolute inset-0 w-full h-full transition-all duration-1000 ease-in-out ${
+              index === 0 ? "object-contain" : "object-cover"
+            } ${
               index === currentIndex ? "opacity-100 scale-100 z-10" : "opacity-0 scale-105 z-0"
             }`}
           />
@@ -781,7 +785,8 @@ export default function App() {
                 Sitarama Institutions
               </span>
               <span className="text-[9px] font-extrabold text-[#eeb902] tracking-widest uppercase mt-0.5 font-sans">
-                Est. 2026 — Excellence in Education
+                Est. 2006 — Excellence in Education
+
               </span>
             </div>
           </a>
@@ -797,13 +802,9 @@ export default function App() {
                 {link}
               </a>
             ))}
-            <a
-              href="#contact"
-              className="ml-6 px-6 py-2.5 text-sm font-extrabold rounded-full btn-gold"
-            >
-              Apply Now
-            </a>
           </nav>
+
+
 
           {/* Hamburger */}
           <button
@@ -835,17 +836,9 @@ export default function App() {
                   {link}
                 </a>
               ))}
-              <div className="flex flex-col gap-3 mt-3 pt-4 border-t border-white/5">
-                <a 
-                  href="#contact" 
-                  onClick={() => setMenuOpen(false)}
-                  className="text-center px-6 py-3 text-sm font-extrabold rounded-full btn-gold"
-                >
-                  Apply Now
-                </a>
-              </div>
             </div>
           </div>
+
         )}
       </header>
 
@@ -904,7 +897,8 @@ export default function App() {
             <div className="mt-16 pt-8 border-t border-white/10 flex gap-12 sm:gap-16 font-sans animate-fade-in-up delay-400">
               {[
                 { val: "800+", label: "Students" },
-                { val: "20+", label: "Teachers" },
+                { val: "30+", label: "Teachers" },
+
                 { val: "99%", label: "Success" },
               ].map((s) => (
                 <div key={s.label}>
@@ -1183,9 +1177,8 @@ export default function App() {
                     </div>
 
                     {/* Card Footer */}
-                    <div className="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between font-sans">
+                    <div className="mt-8 pt-5 border-t border-slate-100 font-sans">
                       <span className="text-xs text-slate-450">3-Year Course</span>
-                      <span className="gold-link text-sm">Admissions Open →</span>
                     </div>
                   </div>
                 ))}
@@ -1238,7 +1231,9 @@ export default function App() {
               </div>
               <div className="flex items-center gap-2.5">
                 <span className="text-[#eeb902]">📞</span>
-                <span>+91 </span>
+                <span>+91 9030768981&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;+91 9949847313</span>
+
+
               </div>
               <div className="flex items-center gap-2.5">
                 <span className="text-[#eeb902]">✉️</span>
@@ -1276,30 +1271,13 @@ export default function App() {
           </div>
 
           {/* Newsletter */}
-          <div>
-            <h4 className="font-black text-xs uppercase tracking-widest text-[#eeb902] mb-6">Newsletter</h4>
-            <p className="text-slate-450 text-xs mb-5">Subscribe to get updates on new courses, admissions, and campus events.</p>
-            <div className="flex gap-2">
-              <input
-                id="newsletter-email"
-                type="email"
-                placeholder="Your email"
-                className="flex-1 px-4 py-3 text-xs rounded-full bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#eeb902]/20 focus:border-[#eeb902] transition-all shadow-inner"
-              />
-              <button
-                id="newsletter-submit"
-                aria-label="Subscribe"
-                className="px-4.5 py-3 rounded-full btn-gold text-xs font-bold cursor-pointer"
-              >
-                →
-              </button>
-            </div>
-          </div>
         </div>
+
 
         {/* Bottom */}
         <div className="border-t border-white/5 pt-8 flex flex-col sm:flex-row justify-between items-center gap-3.5 text-[10px] text-slate-400 font-sans">
-          <span>© 2026 SITARAMA DEGREE COLLEGE ,KATHIPUDI. All rights reserved.</span>
+          <span>© 2006 SITARAMA DEGREE COLLEGE ,KATHIPUDI. All rights reserved.</span>
+
           <span className="font-bold uppercase tracking-wider text-[#eeb902]">Designed with care for education</span>
         </div>
       </footer>
